@@ -69,12 +69,6 @@ class Task(BaseModel) :
     due_date : str
     due_time : str
 
-# @app.post("/tasks/{user_id}")
-# def create_task(user_id : int, task: Task):
-#     cursor.execute("insert into tasks(user_id, title, des, priority, due_date, due_time, completed) values (%s,%s,%s,%s,%s,%s,%s)", (user_id, task.title, task.description, task.priority, task.due_date, task.due_time, False))
-#     conn.commit()
-#     return {"message" : "Task Added Successfully...!!"}
-
 @app.post("/tasks/{user_id}")
 def create_task(user_id: int, task: Task):
 
@@ -101,38 +95,6 @@ def create_task(user_id: int, task: Task):
     schedule_task(phone, task.title, task.description, due_datetime)
 
     return {"message": "Task Added Successfully...!!"}
-
-# @app.post("/tasks/{user_id}")
-# def create_task(user_id: int, task: Task):
-
-#     # 🔹 Insert task into DB
-#     cursor.execute(
-#         "insert into tasks(user_id, title, des, priority, due_date, due_time, completed) values (%s,%s,%s,%s,%s,%s,%s)",
-#         (user_id, task.title, task.description, task.priority, task.due_date, task.due_time, False)
-#     )
-#     conn.commit()
-
-#     # 🔹 Get user's phone number
-#     cursor.execute("select phoneNum from users where id = %s", (user_id,))
-#     user = cursor.fetchone()
-#     phone = "+91" + str(user["phoneNum"])
-
-#     # 🔹 Send data to n8n webhook
-#     try:
-#         due_datetime = f"{task.due_date} {task.due_time}"
-#         iso_time = datetime.strptime(due_datetime, "%Y-%m-%d %H:%M:%S").isoformat() + "Z"
-#         requests.post(
-#             "https://dhairya-7.app.n8n.cloud/webhook/task-reminder",
-#             json={
-#                 "title": task.title,
-#                 "due_datetime": iso_time,
-#                 "phone": phone
-#             }
-#         )
-#     except Exception as e:
-#         print("n8n error:", e)
-
-#     return {"message": "Task Added Successfully...!!"}
 
 
 @app.get("/tasks/{user_id}")
