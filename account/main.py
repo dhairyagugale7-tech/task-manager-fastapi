@@ -1,12 +1,16 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import mysql.connector
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 conn = mysql.connector.connect(
-    host = "localhost",
-    user = "root",
-    password = "Dhai@281006",
-    database = "task_manager2"
+    host = os.getenv("DB_HOST"),
+    user = os.getenv("DB_USER"),
+    password = os.getenv("DB_PASSWORD"),
+    database = os.getenv("DB_NAME")
 )
 
 cursor = conn.cursor(dictionary = True)

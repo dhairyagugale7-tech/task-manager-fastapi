@@ -1,6 +1,7 @@
 import streamlit as st
 from api_service_task import *
 from datetime import datetime
+from datetime import timedelta
 
 def task_app() : 
 
@@ -125,11 +126,18 @@ def task_app() :
 
             with col2:
                 st.write(task["due_date"])
+                raw_time = task["due_time"]
+
                 try:
-                    time_obj = datetime.strptime(str(task["due_time"]), "%H:%M:%S")
+                    if isinstance(raw_time, (int, float)):
+                        time_obj = (datetime.min + timedelta(seconds=int(raw_time))).time()
+                    else:
+                        time_obj = datetime.strptime(str(raw_time), "%H:%M:%S").time()
+
                     st.write(time_obj.strftime("%I:%M %p"))
+
                 except:
-                    st.write(task["due_time"])
+                    st.write("No Time")
 
             with col3:
                 st.markdown(
@@ -174,18 +182,24 @@ def task_app() :
                     value=datetime.strptime(task["due_date"], "%Y-%m-%d")
                 )
             with col2 : 
-                new_time = st.time_input(
-                    "Due Time",
-                    value=datetime.strptime(task["due_time"], "%H:%M:%S").time()
-                )
+                raw_time = task["due_time"]
+
+                try:
+                    if isinstance(raw_time, (int, float)):
+                        time_obj = (datetime.min + timedelta(seconds=int(raw_time))).time()
+                    else:
+                        time_obj = datetime.strptime(str(raw_time), "%H:%M:%S").time()
+                except:
+                    time_obj = datetime.now().time()
+
+                new_time = st.time_input("Due Time", value=time_obj)
 
             col1, col2 = st.columns(2)
-
-            with col1:
+            with col1 : 
                 save = st.form_submit_button("Save Changes")
-
-            with col2:
-                cancel = st.form_submit_button("Cancel")
+            
+            with col2 : 
+                cancel = st.form_submit_button("Cancel Changes")
 
             if save:
                 update_task(

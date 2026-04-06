@@ -22,7 +22,7 @@ import os
 
 ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
 AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
-TWILIO_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
+TWILIO_WHATSAPP_NUMBER = os.getenv("TWILIO_WHATSAPP_NUMBER")
 
 client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
@@ -31,9 +31,9 @@ def send_sms(phone, title, description):
 
     try:
         message = client.messages.create(
-            body=f"Reminder: {title} 💗\n description: {description}",
-            from_=TWILIO_NUMBER,
-            to=phone
+            body=f"🔥 Reminder: {title}\n📝 {description}",
+            from_=TWILIO_WHATSAPP_NUMBER,
+            to=f'whatsapp:{phone}'
         )
         print("✅ SMS SENT:", message.sid)
 
