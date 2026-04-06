@@ -29,7 +29,7 @@ if st.session_state.reset_form :
     st.session_state.add_phoneNum = ""
 
 # Header
-st.title("TASK MANANGER")
+st.title("TASK MANAGER")
 
 
 
